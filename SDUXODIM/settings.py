@@ -38,9 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'main',
-    'authentication'
+    'authentication',
+    'accounts'
 
 ]
+
+LOGIN_REDIRECT_URL = '/profile/'
+LOGIN_URL = '/auth/login/'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -122,15 +126,20 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'main/static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  # Изменено с console на smtp
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
-EMAIL_HOST = 587
+EMAIL_HOST_USER = "sduxodim@gmail.com"
+EMAIL_HOST_PASSWORD = "ujtn slhs vlzs oruz"
+EMAIL_PORT = 587  # Исправлено с EMAIL_P на EMAIL_PORT
 EMAIL_USE_TLS = True

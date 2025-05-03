@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Профиль Head of Club</title>
+  <link rel="stylesheet" href="{% static 'accstyle.css' %}" />
+</head>
+<body>
+  <div class="container">
+    <div class="profile">
+      <img src="{% static 'avatar.jpg' %}" alt="Аватар" class="avatar" />
+      <h1 class="name">{{ user.username }}</h1>
+      <p class="club-role">Head of {{ user.faculty }} Club</p>
+      <a href="/add-event/" class="add-event-button">Добавить ивент</a>
+    </div>
+
+    <div class="events">
+      <h2>Мои ивенты</h2>
+      {% for event in events %}
+      <div class="event-card">
+        <h3 class="event-title">{{ event.title }}</h3>
+        <p>Дата: {{ event.date }}</p>
+        <p>Билеты: {{ event.tickets }}</p>
+        <a href="/events/{{ event.id }}/" class="event-link">Перейти →</a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</body>
+</html>

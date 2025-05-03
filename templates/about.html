@@ -1,14 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>About</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About us</title>
 </head>
+{% load static %}
+<link href = "{% static 'css/about.css' %}" rel = "stylesheet">
 <body>
-<div>
 
-    <h1>About us</h1>
+  <header>
+  <div class="logo"></div>
+    <nav>
+      <a href="{% url 'profile' %}">Profile</a>
+      <a href="{% url 'index' %}">Home Page</a>
+    </nav>
+  </header>
 
-</div>
+  <div class="container">
+    <div class="section">
+      <h1>About Us</h1>
+        <p>Biz andai myndai isteimiz anau mynau</p>
+
+      <div class="image-row">
+        <div>Image 1</div>
+        <div>Image 2</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Heading</h2>
+      <p>Subheading</p>
+
+        <div class="authors">
+           <div class="content-box" id="tileuzhan">
+               <h3>Tileuzhan</h3>
+               <p></p>
+           </div>
+            <div class="content-box" id="alpamys">
+                <h3>Alpamys</h3>
+            </div>
+            <div class="content-box" id="bakosh">
+                <h3>Bakdaulet</h3>
+            </div>
+            <div class="content-box" id="adilkhan">
+                <h3>Adilkhan</h3>
+            </div>
+        </div>
+    </div>
+  </div>
 </body>
 </html>

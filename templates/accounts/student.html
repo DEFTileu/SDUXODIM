@@ -1,0 +1,351 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Профиль студента с адаптивным дизайном и возможностью редактирования">
+  <title>Профиль студента - {{ student.full_name }}</title>
+  <style>
+    :root {
+      --primary-color: #1e40af; /* Глубокий синий */
+      --secondary-color: #60a5fa; /* Светло-синий акцент */
+      --text-color: #111827; /* Тёмный для текста */
+      --bg-color: #f1f5f9; /* Мягкий светлый фон */
+      --card-bg: #ffffff;
+      --shadow-color: rgba(0, 0, 0, 0.15);
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      line-height: 1.6;
+      padding: 1rem;
+    }
+
+    .profile-card {
+      background-color: var(--card-bg);
+      padding: 2.5rem;
+      border-radius: 1.25rem;
+      box-shadow: 0 8px 24px var(--shadow-color);
+      max-width: 450px;
+      width: 100%;
+      transform: translateY(0);
+      transition: var(--transition);
+    }
+
+    .profile-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 32px var(--shadow-color);
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      border-bottom: 2px solid var(--secondary-color);
+    }
+
+    .tab {
+      background: none;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text-color);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .tab.active {
+      color: var(--primary-color);
+      border-bottom: 3px solid var(--primary-color);
+    }
+
+    .tab:hover {
+      color: var(--secondary-color);
+    }
+
+    .avatar {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 5px solid var(--primary-color);
+      margin: 0 auto 1.5rem;
+      display: block;
+      transition: var(--transition);
+    }
+
+    .avatar:hover {
+      border-color: var(--secondary-color);
+      transform: scale(1.05);
+    }
+
+    .name {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.025em;
+    }
+
+    .course, .gpa, .contact {
+      font-size: 1.125rem;
+      margin: 0.5rem 0;
+      color: var(--text-color);
+    }
+
+    .contact {
+      font-size: 1rem;
+      color: var(--secondary-color);
+      margin-top: 1rem;
+    }
+
+    .badge {
+      display: inline-block;
+      background-color: var(--secondary-color);
+      color: var(--card-bg);
+      padding: 0.5rem 1rem;
+      border-radius: 1rem;
+      font-size: 0.875rem;
+      margin-top: 1rem;
+      font-weight: 500;
+    }
+
+    .edit-form {
+      text-align: left;
+      display: none; /* Initially hidden */
+    }
+
+    .edit-form.active {
+      display: block; /* Shown when active */
+    }
+
+    .edit-form label {
+      display: block;
+      font-size: 1rem;
+      color: var(--text-color);
+      margin-bottom: 0.25rem;
+      font-weight: 500;
+    }
+
+    .edit-form input[type="text"],
+    .edit-form input[type="email"],
+    .edit-form input[type="file"] {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid var(--secondary-color);
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      transition: var(--transition);
+    }
+
+    .edit-form input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+    }
+
+    .edit-form button {
+      background-color: var(--primary-color);
+      color: var(--card-bg);
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      width: 100%;
+    }
+
+    .edit-form button:hover {
+      background-color: var(--secondary-color);
+      transform: translateY(-2px);
+    }
+
+    .edit-button {
+      background-color: var(--primary-color);
+      color: var(--card-bg);
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-top: 1.5rem;
+      width: 100%;
+      text-align: center;
+    }
+
+    .edit-button:hover {
+      background-color: var(--secondary-color);
+      transform: translateY(-2px);
+    }
+
+    .clubs-section {
+      margin-top: 2rem;
+      text-align: left;
+      border-top: 1px solid var(--secondary-color);
+      padding-top: 1.5rem;
+    }
+
+    .clubs-section h3 {
+      font-size: 1.25rem;
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+    }
+
+    .club-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .club-list li {
+      font-size: 1rem;
+      color: var(--text-color);
+      margin: 0.5rem 0;
+      padding-left: 1.5rem;
+      position: relative;
+    }
+
+    .club-list li::before {
+      content: '•';
+      color: var(--secondary-color);
+      font-size: 1.5rem;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    @media (max-width: 600px) {
+      .profile-card {
+        padding: 1.75rem;
+      }
+
+      .avatar {
+        width: 100px;
+        height: 100px;
+        border-width: 4px;
+      }
+
+      .name {
+        font-size: 1.5rem;
+      }
+
+      .course, .gpa, .contact {
+        font-size: 1rem;
+      }
+
+      .badge {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.8rem;
+      }
+
+      .tab {
+        padding: 0.6rem 1rem;
+        font-size: 0.875rem;
+      }
+
+      .edit-form button, .edit-button {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.875rem;
+      }
+
+      .clubs-section h3 {
+        font-size: 1.125rem;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .profile-card {
+        padding: 1.25rem;
+      }
+
+      .name {
+        font-size: 1.25rem;
+      }
+
+      .avatar {
+        width: 80px;
+        height: 80px;
+      }
+
+      .club-list li {
+        font-size: 0.875rem;
+      }
+    }
+
+    /* Поддержка шрифта Inter через CDN */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+  </style>
+</head>
+<body>
+  <div class="profile-card">
+    <div class="tabs">
+      <button class="tab active">Профиль</button>
+    </div>
+
+    <div id="profile" class="tab-content">
+      <img src="{% if student.avatar %}{{ student.avatar.url }}{% else %}https://via.placeholder.com/150{% endif %}" alt="Аватар студента" class="avatar">
+      <div class="name">{{ student.full_name }}</div>
+      <div class="course">Курс: {{ student.course }}</div>
+      <div class="gpa">GPA: {{ student.gpa }}</div>
+      <div class="contact">Email: {{ student.email }}</div>
+      <div class="badge">{% if student.gpa >= 3.5 %}Отличник{% else %}Студент{% endif %}</div>
+      <div class="clubs-section">
+        <h3>Подписанные клубы</h3>
+        <ul class="club-list">
+          {% for club in student.clubs.all %}
+            <li>{{ club.name }}</li>
+          {% empty %}
+            <li>Нет подписок на клубы</li>
+          {% endfor %}
+        </ul>
+      </div>
+      <button class="edit-button" onclick="toggleEditForm()">Изменить профиль</button>
+    </div>
+
+    <div id="edit" class="edit-form">
+      <form class="edit-form" action="{% url 'edit_profile' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="full_name">Полное имя</label>
+        <input type="text" id="full_name" name="full_name" value="{{ student.full_name }}" required>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" value="{{ student.email }}" required>
+
+        <label for="course">Курс</label>
+        <input type="text" id="course" name="course" value="{{ student.course }}" required>
+
+        <label for="avatar">Аватар</label>
+        <input type="file" id="avatar" name="avatar" accept="image/*">
+
+        <button type="submit">Сохранить изменения</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function toggleEditForm() {
+      const editForm = document.getElementById('edit');
+      editForm.classList.toggle('active');
+    }
+  </script>
+</body>
+</html>

@@ -21,16 +21,6 @@ header {
     border-bottom: 1px solid #ddd;
 }
 
-header nav {
-    display: flex;
-    justify-content: space-around;
-}
-
-header nav ul {
-    list-style-type: none;
-    display: flex;
-    gap: 15px;
-}
 
 header nav a {
     text-decoration: none;
@@ -129,6 +119,7 @@ header nav a:hover {
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
+    height: 400px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     text-align: center;
     transition: transform 0.3s, box-shadow 0.3s;
@@ -140,7 +131,6 @@ header nav a:hover {
 }
 
 .quote p {
-    font-style: italic;
     color: #007bff;
     font-size: 20px;
 }
@@ -164,4 +154,54 @@ footer {
     text-align: center;
     border-top: 1px solid #ddd;
     color: #333;
+}
+
+.main-page-button {
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
+    border-radius: 10px;
+}
+
+.logo {
+    /*background-color: red;*/
+    background-image: url("https://raw.githubusercontent.com/adilkhanalimberdi/images/main/sdu_logo.png");
+    background-size: cover;
+    position: absolute;
+    width: 70px;
+    height:70px;
+    margin-top: 5px;
+    margin-left: 7px;
+    align: left;
+}
+
+#header {
+    display: flex;
+    justify-content: space-between;
+}
+
+#about {
+    display: flex;
+    width: 87%;
+    align-items: center;
+    justify-content: right;
+}
+
+header nav a {
+    margin-left: 15px;
+}
+
+.quote-photo {
+    background-image: url("https://raw.githubusercontent.com/adilkhanalimberdi/images/main/photo_2025-05-04_02-57-29.jpg");
+    background-size: cover;
+    background-position-y: -15px;
+    border-radius: 5px;
+    width: 100%;
+    height: 250px;
+    margin-bottom: 10px;
+}
+
+.countdown {
+    font-size: 20px;
+
 }
