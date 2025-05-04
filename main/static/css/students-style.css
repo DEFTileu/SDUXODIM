@@ -301,3 +301,17 @@
     height: 80px;
     cursor: pointer;
 }
+
+
+.event-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.event-form input, .event-form select {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}

@@ -39,6 +39,15 @@ def register_page(request):
 def login_page(request):
     return render(request, 'login.html')
 
+def booking_page(request):
+    return render(request, 'booking.html')
+
+def booking_view(request, event_id):
+    now = datetime.datetime.now()
+    event = get_object_or_404(Event, id=event_id)
+    return render(request, 'booking.html', {'event': event})
+
+
 from django.shortcuts import redirect
 from django.contrib.auth import logout
 
