@@ -21,6 +21,7 @@ class Event(models.Model):
     organizer = models.ForeignKey(Club, to_field='club_id', on_delete=models.SET_NULL, null=True)
     date = models.DateTimeField(blank=False)
     location = models.CharField(max_length=40, null=True)
+    creator = models.ForeignKey(Users, on_delete=models.SET_NULL, related_name='events',null=True)
 
 
     def __str__(self):

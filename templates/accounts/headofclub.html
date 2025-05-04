@@ -1,31 +1,46 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Профиль Head of Club</title>
-  <link rel="stylesheet" href="{% static 'accstyle.css' %}" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Профиль студента с адаптивным дизайном и возможностью редактирования">
+  <title>Profile</title>
+  <link rel="stylesheet" href="{% static 'css/students-style.css' %}">
 </head>
 <body>
-  <div class="container">
-    <div class="profile">
-      <img src="{% static 'avatar.jpg' %}" alt="Аватар" class="avatar" />
-      <h1 class="name">{{ user.username }}</h1>
-      <p class="club-role">Head of {{ user.faculty }} Club</p>
-      <a href="/add-event/" class="add-event-button">Добавить ивент</a>
+  <div class="profile-card">
+
+    <div id="profile" class="tab-content">
+      <div class="avatar"></div>
+      <div class="name">{{ user.username }}</div>
+      <div class="course">Course: {{ user.course }}</div>
+      <div class="course">Faculty: {{ user.faculty }}</div>
+      <div class="course">Email: {{ user.email }}</div>
+
+      <!-- Секция с ивентами -->
+      <div class="events-section">
+  <h3>My Events ({{ user.events.count }})</h3>  <!-- Показываем количество -->
+  <ul class="event-list">
+    {% for event in events %}
+      <li>
+        <a href="{% url 'booking' event.id %}">
+          {{ event.title }} – {{ event.date|date:"Y-m-d H:i" }}
+        </a>
+      </li>
+    {% empty %}
+      <li>No events added</li>
+    {% endfor %}
+  </ul>
+  <button class="add-event-button" onclick="window.location.href='{% url 'add_event' %}'">Добавить ивент</button>
+</div>
+
+
+      <button class="edit-button" onclick="window.location.href='{% url 'logout' %}'">Log out</button>
     </div>
 
-    <div class="events">
-      <h2>Мои ивенты</h2>
-      {% for event in events %}
-      <div class="event-card">
-        <h3 class="event-title">{{ event.title }}</h3>
-        <p>Дата: {{ event.date }}</p>
-        <p>Билеты: {{ event.tickets }}</p>
-        <a href="/events/{{ event.id }}/" class="event-link">Перейти →</a>
-      </div>
-      {% endfor %}
-    </div>
   </div>
+
+  <a href="{% url 'index' %}"><div class="logo"></div></a>
 </body>
 </html>

@@ -11,30 +11,30 @@ def check_and_send_reminders():
     now = timezone.now()
     for ticket in Ticket.objects.select_related('event'):
         event = ticket.event
-        delta = event.start_time - now
+        delta = event.date - now
 
-        if delta <= timedelta(days=1) and not ticket.reminder_day_sent:
+        if delta <= timedelta(days=1) and not ticket.notified_1day:
             send_mail(
-                subject=f"Напоминание: завтра {event.name}",
-                recipients=[ticket.email],
-                template_name='emails/reminder_day.html',
+                subject=f"Напоминание: завтра {event.title}",
+                recipients=[ticket.user.email],
+                template_name='Notification/reminder_day.html',
                 context={
                     'event': event,
-                    'user_name': ticket.user_name,
+                    'user_name': ticket.user.username,
                     'time_left': 'завтра',
                 }
             )
             ticket.reminder_day_sent = True
             ticket.save()
 
-        if delta <= timedelta(hours=1) and not ticket.reminder_hour_sent:
+        if delta <= timedelta(hours=1) and not ticket.notified_1hour:
             send_mail(
-                subject=f"Скоро начнется {event.name}",
-                recipients=[ticket.email],
-                template_name='emails/reminder_hour.html',
+                subject=f"Скоро начнется {event.title}",
+                recipients=[ticket.user.email],
+                template_name='Notification/reminder_day.html',
                 context={
                     'event': event,
-                    'user_name': ticket.user_name,
+                    'user_name': ticket.user.username,
                     'time_left': 'через час',
                 }
             )
