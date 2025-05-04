@@ -106,7 +106,7 @@
 </head>
 <body>
     <div class="container">
-        <h2 role="heading" aria-level="2">Регистрация</h2>
+        <h2 role="heading" aria-level="2">Registration</h2>
         <!-- Отображение сообщений -->
         {% if messages %}
             {% for message in messages %}
@@ -119,23 +119,23 @@
         <form method="POST" role="form" aria-label="Форма регистрации">
             {% csrf_token %}
             <div class="form-group">
-                <label for="username">Имя</label>
+                <label for="username">Name</label>
                 <input type="text" id="username" name="username" required aria-required="true" aria-label="Введите ваше имя">
             </div>
             <div class="form-group">
-                <label for="email">Электронная почта</label>
+                <label for="email">E-Mail</label>
                 <input type="email" id="email" name="email" required aria-required="true" aria-label="Введите вашу электронную почту">
             </div>
             <div class="form-group">
-                <label for="password">Пароль</label>
+                <label for="password">Password</label>
                 <input type="password" id="password" name="password" required aria-required="true" aria-label="Введите ваш пароль">
             </div>
             <div class="form-group">
-                <label for="confirm-password">Подтверждение пароля</label>
+                <label for="confirm-password">Сonfirm password</label>
                 <input type="password" id="confirm-password" name="confirm-password" required aria-required="true" aria-label="Подтвердите ваш пароль">
             </div>
             <div class="form-group">
-                <label for="faculty">Выберите факультет</label>
+                <label for="faculty">Select a Faculty</label>
                 <select id="faculty" name="faculty" required aria-required="true" aria-label="Выберите ваш факультет">
                     <option value="FENS">FENS</option>
                     <option value="BS">BS</option>
@@ -144,25 +144,25 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="course">Выберите курс</label>
+                <label for="course">Select a course</label>
                 <select id="course" name="course" required aria-required="true" aria-label="Выберите ваш курс">
-                    <option value="1">1 курс</option>
-                    <option value="2">2 курс</option>
-                    <option value="3">3 курс</option>
-                    <option value="4">4 курс</option>
+                    <option value="1">1 course</option>
+                    <option value="2">2 course</option>
+                    <option value="3">3 course</option>
+                    <option value="4">4 course</option>
                 </select>
             </div>
             <div class="form-group">
-                <label for="role">Роль</label>
+                <label for="role">Role</label>
                 <select id="role" name="role" required aria-required="true" aria-label="Выберите вашу роль">
-                    <option value="student">Студент</option>
-                    <option value="club_head">Руководитель клуба</option>
+                    <option value="student">Student</option>
+                    <option value="club_head">Club Manager</option>
                 </select>
             </div>
-            <button type="submit" aria-label="Зарегистрироваться">Зарегистрироваться</button>
+            <button type="submit" aria-label="Зарегистрироваться">Register</button>
         </form>
         <div class="link">
-            <p>Уже есть аккаунт? <a href="{% url 'login' %}" aria-label="Перейти к входу">Войти</a></p>
+            <p>Already have an account? <a href="{% url 'login' %}" aria-label="Перейти к входу">Log in</a></p>
         </div>
     </div>
     <script>

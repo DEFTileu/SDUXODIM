@@ -4,13 +4,13 @@ function updateCountdowns() {
     quotes.forEach(quote => {
         const dateStr = quote.getAttribute('data-date');
         const countdownElem = quote.querySelector('.countdown');
-        const targetTime = new Date(dateStr).getTime();
+        const targetTime = new Date(dateStr);
 
-        const now = new Date().getTime();
+        const now = new Date();
         const diff = targetTime - now;
 
         if (diff <= 0) {
-            countdownElem.innerText = 'Event has started';
+            countdownElem.innerText = 'You are late';
             return;
         }
 

@@ -1,32 +1,48 @@
+from django.contrib.auth import authenticate
+from .models import Users  # или accounts.models
+
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth.models import User as DjangoUser
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password, check_password
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from utils.utils import send_mail
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
+from django.contrib import messages
 from .models import Users
 
+from django.contrib.auth import login
 
 def login_page(request):
-    email = request.POST.get('email')
-    password = request.POST.get('password')
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        print(email, password)
 
-    try:
-        user_profile = Users.objects.get(email=email)
-    except Users.DoesNotExist:
-        # messages.error(request, "Пользователь с таким email не найден")
-        return render(request, 'login.html')
 
-    if user_profile.user.check_password(password):
-        request.session['user_email'] = user_profile.user.email
-        request.session['user_role'] = user_profile.role
-        request.session['user_course'] = user_profile.course
-        messages.success(request, "Вы успешно вошли")
-        return render(request, 'accounts/student.html', {'user': user_profile})
+        try:
+            auth_user = Users.objects.get(email=email)
+            print(auth_user)
+            print(auth_user.password == password)
+            print(auth_user.password)
+            if auth_user.password == password:
+                auth_user.backend = 'django.contrib.auth.backends.ModelBackend'
+                print(auth_user)
+                login(request, auth_user)
 
-    messages.error(request, "Неверный пароль")
+                request.session['user_email'] = auth_user.email
+                messages.success(request, "Вы успешно вошли!")
+                return redirect('index')
+
+            else:
+                messages.error(request, "Неверный пароль")
+        except Users.DoesNotExist:
+            messages.error(request, "Пользователь с таким email не найден")
+
     return render(request, 'login.html')
+
+
 
 
 def register_page(request):
@@ -65,11 +81,12 @@ def register_page(request):
             Users.objects.create(
                 username=username,
                 email=email,
-                password=make_password(password),
+                password=password,
                 course=course,
                 faculty=faculty,
                 role = role,
-            )
+            ).save()
+
 
             try:
                 send_mail(
@@ -78,7 +95,7 @@ def register_page(request):
                     template_name='Notification/welcome.html',
                     context={'user_email': email, 'username': username},
                 )
-            except Exception:
+            except Exception as e:
                 messages.warning(request, "Письмо не отправлено, но регистрация успешна")
 
             messages.success(request, "Регистрация успешна!")

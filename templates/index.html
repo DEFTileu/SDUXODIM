@@ -1,56 +1,69 @@
 <!DOCTYPE html>
-<link lang="en">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SDU Sxodim</title>
 </head>
 {% load static %}
-<link href = "{%  static 'css/main.css' %}" rel = "stylesheet">
+<link href="{% static 'css/main.css' %}" rel="stylesheet">
 <body>
 <div class="logo"></div>
-    <header id="header">
+<header id="header">
 
-        <nav id = "about">
-            <a href = "{%  url 'fortest' %}">Test</a>
-            <a href = "{%  url 'profile' %}">Profile</a>
-            <a href = "{% url 'about'%}">About us</a>
-        </nav>
-        <div class="auth-buttons">
-            <button onclick = "window.location.href = '{% url 'login' %}'">Sign in</button>
-            <button onclick = "window.location.href = '{% url 'register' %}'">Register</button>
+    <nav id="about">
+        {% if request.session.user_email %}
+            <a href="{% url 'profile' %}">Profile</a>
+            {% else %}
+
+        {% endif %}
+        <a href="{% url 'about'%}">About us</a>
+    </nav>
+    <div class="auth-buttons">
+        {% if not request.session.user_email %}
+            <!-- Если пользователь не авторизован, показываем кнопки входа и регистрации -->
+            <button onclick="window.location.href = '{% url 'login' %}'">Sign in</button>
+            <button onclick="window.location.href = '{% url 'register' %}'">Register</button>
+        {% else %}
+            <!-- Если пользователь авторизован, показываем приветствие и ссылку на профиль -->
+            <div class="logoutAndUserName">
+                <p>{{ user.username }}!</p>
+                <a href="{% url 'logout' %}">Logout</a>
+            </div>
+
+        {% endif %}
+    </div>
+</header>
+
+<main>
+    <section class="hero">
+        <h1>Sxodim.SDU</h1>
+        <p>All SDU Events</p>
+    </section>
+    <section class="quotes">
+        <h2 class="light-text" id="space">Let's Sxodim!</h2>
+        <h3 class="light-text">Upcoming events:</h3>
+        <div class="quote-container">
+            {% for event in events %}
+
+                <a href="{% url 'booking' event.id %}">
+
+                <div class="quote" data-date="{{ event.date|date:"Y-m-d H:i" }}">
+                    <div class="quote-photo"></div>
+                    <p>"{{ event.title }}"</p>
+                    <h4>{{ event.organizer }} club</h4>
+                    <p>{{ event.date|date:"Y-m-d H:i" }}</p>
+                    <div class="countdown" id="countdown-{{ event.id }}"></div>
+                </div>
+                </a>
+            {% endfor %}
         </div>
-    </header>
+    </section>
+</main>
 
-    <main>
-        <section class="hero">
-            <h1>Sxodim</h1>
-            <p>All SDU Events</p>
-            <div class="buttons">
-                <button>Button</button>
-                <button>Button</button>
-            </div>
-        </section>
-        <section class="quotes">
-            <h2>Heading</h2>
-            <h3>Subheading</h3>
-            <div class="quote-container">
-                {% for event in events%}
-                    <div class="quote" data-date="{{ event.date }}">
-                        <div class="quote-photo"></div>
-                        <p>"{{ event.title }}"</p>
-                        <h4>{{ event.organizer }} club</h4>
-                        <p>{{ event.date }}</p>
-                        <div class="countdown" id="countdown-{{ event.id }}"></div>
-                    </div>
-                {% endfor %}
-            </div>
-        </section>
-    </main>
+<footer>
 
-    <footer>
-
-    </footer>
+</footer>
 <script src="{% static 'js/main.js' %}"></script>
 
 </body>

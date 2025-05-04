@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking tickets</title>
+</head>
+{% load static %}
+<link href="{% static 'css/bookingStyle.css' %}" rel="stylesheet">
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Online ticket booking</h1>
+        </div>
+
+        <!-- Event Information -->
+        <div class="event-info">
+            <h1>{{ event.title }}</h1>
+            <p>Date: {{ event.date|date:"Y-m-d H:i" }}</p>
+            <p>Location: Red Hall</p>
+            <p>Ticket price: 500tg</p>
+        </div>
+
+        <!-- Ticket Info -->
+        <div class="ticket-info">
+            <p>Buy a ticket</p>
+            <button onclick="addToCart()">Add to cart</button>
+        </div>
+
+        <!-- Cart Info -->
+        <div class="cart-info" id="cart">
+            <h2>Cart</h2>
+            <p>Number of tickets: <span id="ticket-count">0</span></p>
+            <p>Total cost: <span id="total-price">0</span> tenge</p>
+
+            <!-- The form for placing an order -->
+
+
+                <input type="hidden" name="event_id" value="{{ event.id }}">
+                <input type="hidden" name="ticket_count" id="ticket-count-input" value="0">
+                <button type="submit" onclick="clearCart()">Place an order</button>
+
+
+
+        </div>
+
+        <div class="footer">
+            <p>&copy; 2025 All rights reserved</p>
+        </div>
+    </div>
+
+   <script>
+    let ticketCount = 0;
+    let ticketPrice = 500;
+
+    function addToCart() {
+        ticketCount++;
+        updateCart();
+    }
+
+    function clearCart() {
+        ticketCount = 0;
+        updateCart();
+    }
+
+    function updateCart() {
+        document.getElementById('ticket-count').textContent = ticketCount;
+        document.getElementById('total-price').textContent = ticketCount * ticketPrice;
+        document.getElementById('ticket-count-input').value = ticketCount;
+    }
+
+    // Новый код — обработка формы
+    document.getElementById('checkout-form').addEventListener('submit', function(e) {
+        clearCart(); // очищаем корзину
+        alert("Успешно!!!")
+
+        // ✅ Форма продолжает отправляться
+        // Если хочешь протестировать без перезагрузки:
+        // e.preventDefault();
+    });
+</script>
+
+</body>
+</html>

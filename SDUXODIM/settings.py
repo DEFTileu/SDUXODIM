@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
+TIME_ZONE = 'Asia/Almaty'
+USE_TZ = True
 
 # Application definition
 
@@ -37,14 +39,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'main',
+    'django_apscheduler',
     'authentication',
-    'accounts'
+    'accounts',
+    'main'
 
 ]
 
 LOGIN_REDIRECT_URL = '/profile/'
 LOGIN_URL = '/auth/login/'
+# AUTH_USER_MODEL = 'authentication.Users'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

@@ -50,11 +50,15 @@ body {
     }
     .image-row div {
       flex: 1;
-      background-color: #ddd;
       height: 200px;
       display: flex;
       justify-content: center;
       align-items: center;
+    }
+
+    #img1 {
+        background-image: url("https://raw.githubusercontent.com/adilkhanalimberdi/images/main/photo_2025-05-04_02-57-17.jpg");
+        background-size: cover;
     }
     .content-box {
       background-color: #fff;
@@ -110,7 +114,6 @@ body {
     }
 
 .content-box .img {
-   background-color: red;
     width: 100%;
     height: 250px;
     background-size: cover;
