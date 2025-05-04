@@ -1,37 +1,31 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User as DjangoUser
-from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth.hashers import make_password
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
-
 from utils.utils import send_mail
 from .models import Users
 
 
 def login_page(request):
-    if request.method == 'POST':
-        email = request.POST.get('email')
-        password = request.POST.get('password')
+    email = request.POST.get('email')
+    password = request.POST.get('password')
 
-        try:
-            user_profile = user_profile = Users.objects.get(user__email=email)
-        except Users.DoesNotExist:
-            messages.error(request, "Пользователь с таким email не найден")
-            return render(request, 'login.html')
+    try:
+        user_profile = Users.objects.get(email=email)
+    except Users.DoesNotExist:
+        # messages.error(request, "Пользователь с таким email не найден")
+        return render(request, 'login.html')
 
-        if user_profile.user.check_password(password):
+    if user_profile.user.check_password(password):
+        request.session['user_email'] = user_profile.user.email
+        request.session['user_role'] = user_profile.role
+        request.session['user_course'] = user_profile.course
+        messages.success(request, "Вы успешно вошли")
+        return render(request, 'accounts/student.html', {'user': user_profile})
 
-            # Авторизация через сессию
-            request.session['user_email'] = user_profile.user.email
-            request.session['user_role'] = user_profile.role
-            request.session['user_course'] = user_profile.course
-            messages.success(request, "Вы успешно вошли")
-            return render(request, 'accounts/student.html', {'user': user_profile})
-        else:
-            messages.error(request, "Неверный пароль")
-            return render(request, 'login.html')
-
+    messages.error(request, "Неверный пароль")
     return render(request, 'login.html')
 
 
@@ -46,16 +40,15 @@ def register_page(request):
         confirm_password = request.POST.get('confirm-password')
         course = request.POST.get('course')
         faculty = request.POST.get('faculty')
+        role = request.POST.get('role')
 
-        # Валидация email
         try:
             validate_email(email)
         except ValidationError:
             messages.error(request, "Некорректный формат email")
             return redirect('/auth/register')
 
-        # Проверка на существование email
-        if Users.objects.filter(user__email=email).exists():
+        if Users.objects.filter(email=email).exists():
             messages.error(request, "Пользователь с таким email уже существует")
             return redirect('/auth/login')
 
@@ -68,24 +61,16 @@ def register_page(request):
             return redirect('/auth/register')
 
         try:
-            # Создаём Django User
-            django_user = DjangoUser.objects.create_user(
-                username=username,
-                email=email,
-                password=password
-            )
 
-            # Создаём профиль
             Users.objects.create(
-                user=django_user,
                 username=username,
                 email=email,
                 password=make_password(password),
                 course=course,
-                faculty=faculty
+                faculty=faculty,
+                role = role,
             )
 
-            # Отправка письма
             try:
                 send_mail(
                     subject="Қош келдіңіз! SduXODIM",
@@ -100,9 +85,8 @@ def register_page(request):
             return redirect('/auth/login')
 
         except Exception as e:
-            print(e)
             messages.error(request, "Ошибка при регистрации. Попробуйте снова.")
+            print(e)
             return redirect('/auth/register')
 
     return render(request, 'register.html')
-

@@ -109,8 +109,32 @@ body {
     align: left;
     }
 
+.content-box .img {
+   background-color: red;
+    width: 100%;
+    height: 250px;
+    background-size: cover;
+    border-radius: 5px;
+}
+
 #tileuzhan .img {
-    background-color: red;
-    width: 50px;
-    height: 40px;
+    background-image: url("https://raw.githubusercontent.com/adilkhanalimberdi/images/main/tileu.jpg");
+}
+
+#alpamys .img {
+    background-position-y: -20px;
+    background-image: url("https://raw.githubusercontent.com/adilkhanalimberdi/images/main/alpamys.jpg");
+}
+
+#bakosh .img {
+    background-image: url("https://raw.githubusercontent.com/adilkhanalimberdi/images/main/bakosh.jpg");
+}
+
+#adilkhan .img {
+    background-image: url("https://raw.githubusercontent.com/adilkhanalimberdi/images/main/adilkhan.jpg");
+}
+
+.authors {
+    display: flex;
+    justify-content: space-between;
 }

@@ -7,17 +7,20 @@ from main.models import Event
 
 @login_required
 def profile(request):
-    user = request.user
-    events = Event.objects.all()
+    email = request.user.email  # email пользователя в стандартной модели User
 
     try:
-        profile = user.profile  # Получаем связанную модель Users
-        if profile.role == 'student':
+        # Ищем пользователя в модели Users по email
+        user = Users.objects.get(email=email)
+        events = Event.objects.all()
+
+        # Проверяем роль пользователя и возвращаем соответствующий шаблон
+        if user.role == 'student':
             return render(request, 'accounts/student.html', {'user': user, 'events': events})
-        elif profile.role == 'club_head':
+        elif user.role == 'club_head':
             return render(request, 'accounts/headofclub.html', {'user': user, 'events': events})
         else:
-            return redirect('register/')
+            return redirect('register/')  # Если роль не определена, перенаправляем на страницу регистрации
     except Users.DoesNotExist:
-        # Если профиля нет, перенаправляем на регистрацию
+        # Если пользователь не найден в базе данных, перенаправляем на страницу регистрации
         return redirect('register/')

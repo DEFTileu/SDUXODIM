@@ -1,13 +1,9 @@
-# authentication/models.py
 from django.db import models
-from django.contrib.auth.models import User
 
 class Users(models.Model):
-    FACULTY_CHOICES = (
-        ('FENS', 'Engineering'),
-        ('BS', 'Business'),
-        ('EDU', 'Education'),
-        ('LSS', 'Law'),
+    ROLE_CHOICES = (
+        ('student', 'Student'),
+        ('club_head', 'Head of Club'),
     )
 
     COURSE_CHOICES = (
@@ -16,15 +12,13 @@ class Users(models.Model):
         ('3', '3 курс'),
         ('4', '4 курс'),
     )
-    ROLE_CHOICES = (
-        ('student', 'Student'),
-        ('club_head', 'HC'),
-    )
-
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile', null=True)
-    role = models.CharField(max_length=9, choices=ROLE_CHOICES, default='student')
-    course = models.CharField(max_length=1, choices=COURSE_CHOICES)
-    faculty = models.CharField(max_length=10, choices=FACULTY_CHOICES)
+    user_id = models.AutoField(primary_key=True)
+    username = models.CharField(max_length=16, blank=False)
+    password = models.CharField(max_length=16,  blank=False)
+    email = models.EmailField(unique=True,  blank=False)
+    course = models.CharField(max_length=1, choices=COURSE_CHOICES,  blank=False)
+    faculty = models.CharField(max_length=16,  blank=False)
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='student',  blank=False)
 
     def __str__(self):
-        return f'{self.user.email} {self.user.username}'
+        return f'{self.username} ({self.role})'

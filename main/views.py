@@ -19,3 +19,6 @@ def register_page(request):
 
 def login_page(request):
     return render(request, 'login.html')
+
+def fortest(request):
+    return render(request, 'fortest.html')
